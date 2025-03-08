@@ -1,31 +1,89 @@
 ﻿@model PruebaQAP2.Models.Card
 
+<style>
+    /* Tema oscuro global */
+    body {
+        background-color: #1c1c1c;
+        color: #f8f9fa;
+        /* Se agrega margen inferior para evitar solapamiento con el footer */
+        margin-bottom: 80px;
+    }
+    /* Contenedor principal */
+    .container {
+        background-color: #2b2b2b;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    /* Estilos para títulos */
+    h1, h3, h4 {
+        font-family: 'Yu-Gi-Oh', sans-serif; /* Cambia 'Yu-Gi-Oh' por la fuente deseada */
+        color: #ffd700;
+    }
+    /* Estilos para párrafos y listas */
+    p, li {
+        font-family: 'Arial', sans-serif;
+        font-size: 1rem;
+    }
+    /* Imagen de la carta */
+    .card-img {
+        border: 2px solid #444;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+    /* Botón personalizado */
+    .btn-secondary {
+        background-color: #444;
+        border: none;
+        color: #ffd700;
+        font-family: 'Yu-Gi-Oh', sans-serif;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #555;
+        }
+</style>
+
 <div class="container">
-    <h1>@Model.name</h1>
-    <img src="@Model.card_images.FirstOrDefault()?.image_url" alt="@Model.name" class="img-fluid" style="max-width: 300px" />
-    <div class="mt-3">
-        <h3>Descripción</h3>
-        <p>@Model.desc</p>
+    <div class="row">
+        <!-- Columna izquierda: Datos de la carta -->
+        <div class="col-md-8">
+            <h1>@Model.name</h1>
+            <div class="mt-3">
+                <h3>Descripción</h3>
+                <p>@Model.desc</p>
+            </div>
+            <div class="mt-3">
+                <h4>Atributos</h4>
+                <ul class="list-unstyled">
+                    <li><strong>Tipo:</strong> @Model.type</li>
+                    @if (Model.type.Contains("Monster"))
+                    {
+                        <li><strong>Ataque:</strong> @(Model.atk != 0 ? Model.atk.ToString() : "N/A")</li>
+                        <li><strong>Defensa:</strong> @(Model.def != 0 ? Model.def.ToString() : "N/A")</li>
+                        <li><strong>Nivel:</strong> @(Model.level != 0 ? Model.level.ToString() : "N/A")</li>
+                    }
+                    else
+                    {
+                        <li><strong>Ataque:</strong> N/A</li>
+                        <li><strong>Defensa:</strong> N/A</li>
+                        <li><strong>Nivel:</strong> N/A</li>
+                    }
+                    <li><strong>Raza:</strong> @Model.race</li>
+                    <li><strong>Atributo:</strong> @Model.attribute</li>
+                </ul>
+            </div>
+            <a href="javascript:history.back();" class="btn btn-secondary mt-3">Volver a la lista</a>
+        </div>
+        <!-- Columna derecha: Imagen de la carta -->
+        <div class="col-md-4 text-center">
+            <img src="@Model.card_images.FirstOrDefault()?.image_url"
+                 alt="@Model.name"
+                 class="img-fluid card-img"
+                 style="max-width: 300px; width: 100%; object-fit: contain;" />
+        </div>
     </div>
-    <div class="mt-3">
-        <h4>Atributos</h4>
-        <ul>
-            <li>Tipo: @Model.type</li>
-            @if (Model.type.Contains("Monster"))
-            {
-                <li>Ataque: @(Model.atk != 0 ? Model.atk.ToString() : "N/A")</li>
-                <li>Defensa: @(Model.def != 0 ? Model.def.ToString() : "N/A")</li>
-                <li>Nivel: @(Model.level != 0 ? Model.level.ToString() : "N/A")</li>
-            }
-            else
-            {
-                <li>Ataque: N/A</li>
-                <li>Defensa: N/A</li>
-                <li>Nivel: N/A</li>
-            }
-            <li>Raza: @Model.race</li>
-            <li>Atributo: @Model.attribute</li>
-        </ul>
-    </div>
-    <a href="@Url.Action("Cards", "Home")" class="btn btn-secondary mt-3">Volver a la lista</a>
 </div>

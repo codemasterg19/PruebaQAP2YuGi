@@ -1,15 +1,64 @@
 ﻿@model List<PruebaQAP2.Models.Card>
 
-<div class="container text-center">
+<style>
+    /* Estilo global para un tema oscuro */
+    body {
+        background-color: #1c1c1c;
+        color: #f8f9fa;
+    }
+    /* Tarjetas con fondo oscuro y borde sutil */
+    .card {
+        background-color: #2b2b2b;
+        border: 1px solid #444;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        transition: transform 0.3s ease;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+    /* Título de la carta con una tipografía que remita a Yu-Gi-Oh */
+    .card-title {
+        font-family: 'Yu-Gi-Oh', sans-serif;
+        font-size: 1.2rem;
+        color: #ffd700; /* Dorado */
+    }
+    /* Texto de la tarjeta */
+    .card-text {
+        font-family: 'Arial', sans-serif;
+        font-size: 1rem;
+    }
+    /* Botón con colores intensos */
+    .btn-primary {
+        background-color: #ff4500;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #e03e00;
+        }
+    /* Título principal */
+    h1 {
+        font-family: 'Yu-Gi-Oh', sans-serif;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: #ffd700;
+    }
+</style>
+
+<div class="container text-center py-5">
     <h1>Cartas Blue-Eyes</h1>
-    <div class="d-flex flex-wrap justify-content-center gap-3">
+    <div class="d-flex flex-wrap justify-content-center gap-4">
         @foreach (var card in Model)
         {
             <div class="card" style="width: 18rem;">
-                <img src="@card.card_images.FirstOrDefault()?.image_url" class="card-img-top p-3" alt="@card.name" style="height: 200px; width: fit-content; max-width: 100%; margin-inline: auto" />
+                <img src="@card.card_images.FirstOrDefault()?.image_url"
+                     class="card-img-top p-3"
+                     alt="@card.name"
+                     style="height: 200px; width: 100%; object-fit: contain;" />
                 <div class="card-body">
                     <h5 class="card-title">@card.name</h5>
-                    <p class="card-text">Precio Ebay: @card.card_prices.FirstOrDefault()?.ebay_price</p>
+                    <p class="card-text">Precio Ebay: $@card.card_prices.FirstOrDefault()?.ebay_price</p>
                     <a href="@Url.Action("Details", "Home", new { id = card.id })" class="btn btn-primary">Ver Detalles</a>
                 </div>
             </div>
