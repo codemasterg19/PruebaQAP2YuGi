@@ -17,28 +17,43 @@ namespace PruebaQAP2.Controllers
             _cardService = cardService;
         }
 
-        // Acción que retorna la lista de cartas a la vista Index
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var cards = await _cardService.GetCardsAsync();
-            return View(cards);  // Se pasa la lista de cartas a la vista
+            int pageSize = 8; // Número de cartas por página (puedes ajustarlo)
+            var allCards = await _cardService.GetCardsAsync();
+            int totalCards = allCards.Count;
+
+            // Obtener las cartas para la página actual
+            var cards = allCards.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            int totalPages = (int)Math.Ceiling(totalCards / (double)pageSize);
+
+            var viewModel = new PaginatedCardsViewModel
+            {
+                Cards = cards,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
+
+            return View(viewModel);
         }
 
-        // Acción para la vista Privacy
+
+
         public IActionResult Privacy()
         {
             return View();
         }
 
-        // Acción adicional para mostrar las cartas (si deseas tener una acción separada)
+       
         public async Task<IActionResult> Cards()
         {
             var cards = await _cardService.GetCardsAsync();
             return View(cards);
-            // Buscará la vista en Views/Home/Cards.cshtml
+            
         }
 
-        // Acción para mostrar el detalle de una carta específica
+        
         public async Task<IActionResult> Details(int id)
         {
             var card = await _cardService.GetCardAsync(id);
@@ -47,10 +62,10 @@ namespace PruebaQAP2.Controllers
                 return NotFound();
             }
             return View(card);
-            // Buscará la vista en Views/Home/Details.cshtml
+            
         }
 
-        // Acción de error
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

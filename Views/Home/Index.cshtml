@@ -1,4 +1,4 @@
-﻿@model List<PruebaQAP2.Models.Card>
+﻿@model PruebaQAP2.Models.PaginatedCardsViewModel
 
 <style>
     /* Estilo global para un tema oscuro */
@@ -17,7 +17,7 @@
         .card:hover {
             transform: scale(1.05);
         }
-    /* Título de la carta con una tipografía que remita a Yu-Gi-Oh */
+    /* Título de la carta */
     .card-title {
         font-family: 'Yu-Gi-Oh', sans-serif;
         font-size: 1.2rem;
@@ -28,7 +28,7 @@
         font-family: 'Arial', sans-serif;
         font-size: 1rem;
     }
-    /* Botón con colores intensos */
+    /* Botón */
     .btn-primary {
         background-color: #ff4500;
         border: none;
@@ -44,12 +44,33 @@
         margin-bottom: 2rem;
         color: #ffd700;
     }
+    /* Estilos para la paginación: solo colores */
+    .pagination .page-item .page-link {
+        color: #ffd700; /* Texto dorado */
+        background-color: transparent;
+        border: 1px solid #444; /* Borde sutil */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #ff4500; /* Fondo naranja para activo */
+        border-color: #ff4500;
+        color: #fff;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #888;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #444;
+        color: #ffd700;
+    }
 </style>
 
 <div class="container text-center py-5">
     <h1>Cartas Blue-Eyes</h1>
     <div class="d-flex flex-wrap justify-content-center gap-4">
-        @foreach (var card in Model)
+        @foreach (var card in Model.Cards)
         {
             <div class="card" style="width: 18rem;">
                 <img src="@card.card_images.FirstOrDefault()?.image_url"
@@ -64,4 +85,22 @@
             </div>
         }
     </div>
+
+    <!-- Controles de paginación -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.CurrentPage - 1 })" tabindex="-1">Anterior</a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Home", new { page = i })">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.CurrentPage + 1 })">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
 </div>
