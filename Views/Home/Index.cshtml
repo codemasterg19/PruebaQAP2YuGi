@@ -1,0 +1,18 @@
+﻿@model List<PruebaQAP2.Models.Card>
+
+<div class="container text-center">
+    <h1>Cartas Blue-Eyes</h1>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        @foreach (var card in Model)
+        {
+            <div class="card" style="width: 18rem;">
+                <img src="@card.card_images.FirstOrDefault()?.image_url" class="card-img-top p-3" alt="@card.name" style="height: 200px; width: fit-content; max-width: 100%; margin-inline: auto" />
+                <div class="card-body">
+                    <h5 class="card-title">@card.name</h5>
+                    <p class="card-text">Precio Ebay: @card.card_prices.FirstOrDefault()?.ebay_price</p>
+                    <a href="@Url.Action("Details", "Home", new { id = card.id })" class="btn btn-primary">Ver Detalles</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿@model PruebaQAP2.Models.Card
+
+<div class="container">
+    <h1>@Model.name</h1>
+    <img src="@Model.card_images.FirstOrDefault()?.image_url" alt="@Model.name" class="img-fluid" style="max-width: 300px" />
+    <div class="mt-3">
+        <h3>Descripción</h3>
+        <p>@Model.desc</p>
+    </div>
+    <div class="mt-3">
+        <h4>Atributos</h4>
+        <ul>
+            <li>Tipo: @Model.type</li>
+            @if (Model.type.Contains("Monster"))
+            {
+                <li>Ataque: @(Model.atk != 0 ? Model.atk.ToString() : "N/A")</li>
+                <li>Defensa: @(Model.def != 0 ? Model.def.ToString() : "N/A")</li>
+                <li>Nivel: @(Model.level != 0 ? Model.level.ToString() : "N/A")</li>
+            }
+            else
+            {
+                <li>Ataque: N/A</li>
+                <li>Defensa: N/A</li>
+                <li>Nivel: N/A</li>
+            }
+            <li>Raza: @Model.race</li>
+            <li>Atributo: @Model.attribute</li>
+        </ul>
+    </div>
+    <a href="@Url.Action("Cards", "Home")" class="btn btn-secondary mt-3">Volver a la lista</a>
+</div>
